@@ -1,0 +1,32 @@
+# Environment variables (ข้อมูลความลับ)
+.env
+.env.local
+.env.*
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+dist-ssr/
+build/
+out/
+
+# Sensitive & Document files (ป้องกันไฟล์หลุด)
+*.doc
+*.docx
+*.txt
+*.gs
+*.log
+*.bak
+*.tmp
+*.temp
+*.swp
+*~
+.DS_Store
+
+# Google Apps Script folder 
+gas/
