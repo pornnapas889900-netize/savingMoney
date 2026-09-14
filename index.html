@@ -1,18 +1,182 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="SmartSave – ระบบออมเงินออนไลน์สำหรับนักเรียน นักศึกษา และครู" />
-    <meta name="theme-color" content="#2563EB" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <title>SmartSave – ระบบออมเงินออนไลน์</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSave - Test API</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
+        pre {
+            background-color: #1e293b;
+            color: #38bdf8;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            max-height: 400px;
+            font-size: 14px;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .status.success { background-color: #dcfce7; color: #166534; }
+        .status.error { background-color: #fee2e2; color: #991b1b; }
+        .status.loading { background-color: #fef9c3; color: #854d0e; }
+        
+        .url-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-family: monospace;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🧪 หน้าต่างทดสอบระบบฐานข้อมูล (API Test)</h1>
+    <p>ใช้หน้านี้เพื่อทดสอบว่า Google Apps Script (ฐานข้อมูลของคุณ) ทำงานเชื่อมต่อได้ปกติหรือไม่</p>
+
+    <div class="card">
+        <h3>1. ตรวจสอบ URL ของ Web App</h3>
+        <!-- URL ที่คุณให้มาถูกใส่ไว้เป็นค่าเริ่มต้นแล้วครับ -->
+        <input type="text" id="apiUrl" class="url-box" value="https://script.google.com/macros/s/AKfycbybLxqbcyM8nb8X66-pzveiAb53mXXSf5Qq9l95Pg1NAFZ_5z1LBOQY434TfAmhI/exec">
+        
+        <div style="margin-top: 15px;">
+            <button id="btnTest" onclick="testConnection()">🔍 1. ทดสอบการเชื่อมต่อ (Ping)</button>
+            <button id="btnLoadData" onclick="loadData()">📥 2. ทดสอบดึงข้อมูล (Load Data)</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>2. ผลลัพธ์การทดสอบ (Result)</h3>
+        <div id="statusIndicator" class="status">รอการทดสอบ...</div>
+        <pre id="resultBox">ผลลัพธ์จะแสดงที่นี่...</pre>
+    </div>
+
+    <script>
+        function getUrl() {
+            return document.getElementById('apiUrl').value.trim();
+        }
+
+        function setStatus(text, type) {
+            const statusEl = document.getElementById('statusIndicator');
+            statusEl.textContent = text;
+            statusEl.className = 'status ' + type;
+        }
+
+        function setResult(data) {
+            document.getElementById('resultBox').textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function testConnection() {
+            const url = getUrl();
+            if (!url) return alert("กรุณาใส่ URL");
+            
+            setStatus('กำลังเชื่อมต่อ...', 'loading');
+            setResult('รอสักครู่...');
+            document.getElementById('btnTest').disabled = true;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                const data = await response.json();
+                
+                setStatus('เชื่อมต่อสำเร็จ! ✅', 'success');
+                setResult(data);
+            } catch (error) {
+                setStatus('เชื่อมต่อล้มเหลว ❌', 'error');
+                setResult({
+                    error: error.message,
+                    suggestion: "ตรวจสอบ URL หรือเช็คสิทธิ์การเข้าถึงเป็น 'Anyone' ในหน้า Google Apps Script"
+                });
+            } finally {
+                document.getElementById('btnTest').disabled = false;
+            }
+        }
+
+        async function loadData() {
+            const url = getUrl();
+            if (!url) return alert("กรุณาใส่ URL");
+            
+            setStatus('กำลังดึงข้อมูลฐานข้อมูล...', 'loading');
+            setResult('รอสักครู่... (อาจใช้เวลา 2-5 วินาที)');
+            document.getElementById('btnLoadData').disabled = true;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify({ action: 'getData' }),
+                    redirect: 'follow'
+                });
+
+                if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+
+                setStatus('ดึงข้อมูลสำเร็จ! ✅', 'success');
+                setResult({
+                    message: "ดึงข้อมูลจาก Google Sheets สำเร็จ!",
+                    summary: {
+                        totalMembers: data.members ? data.members.length : 0,
+                        totalTransactions: data.transactions ? data.transactions.length : 0
+                    },
+                    fullData: data
+                });
+            } catch (error) {
+                setStatus('ดึงข้อมูลล้มเหลว ❌', 'error');
+                setResult({
+                    error: error.message,
+                    suggestion: "เกิดข้อผิดพลาดในการดึงข้อมูลจาก Google Sheets"
+                });
+            } finally {
+                document.getElementById('btnLoadData').disabled = false;
+            }
+        }
+    </script>
+</body>
 </html>
