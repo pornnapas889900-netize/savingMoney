@@ -1,4 +1,4 @@
-const GAS_URL = import.meta.env.VITE_GAS_API_URL
+const GAS_URL = 'https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyyz_RsNOR8ZLGeyQ1KC8kTFWOXY5WRPoP8xLFqX-ZOVqaXnCg8kKD-WWL1LEpy9M7aoQ/exec/exec';
 
 /**
  * ฟังก์ชันหลักสำหรับเรียก Google Apps Script Web App
