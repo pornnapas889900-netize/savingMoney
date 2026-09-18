@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SmartSave – ระบบออมเงินออนไลน์</title>
+  <title>SmartSave – ระบบออมเงินออนไลน์ (แยกบัญชีรายบุคคล)</title>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -39,21 +39,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #7c3aed 100%);
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #6d28d9 100%);
       padding: 20px;
     }
     .login-card {
       background: white;
       border-radius: 28px;
-      padding: 36px 28px;
+      padding: 32px 24px;
       width: 100%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      max-width: 420px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3);
     }
-    .login-logo { font-size: 52px; margin-bottom: 6px; }
-    .login-title { font-size: 26px; font-weight: 800; color: #1e293b; letter-spacing: -0.5px; }
-    .login-subtitle { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+    .login-logo { font-size: 48px; text-align: center; margin-bottom: 4px; }
+    .login-title { font-size: 24px; font-weight: 800; color: #1e293b; text-align: center; }
+    .login-subtitle { font-size: 13px; color: #64748b; text-align: center; margin-bottom: 20px; }
     
     .role-toggle {
       display: grid;
@@ -61,7 +60,7 @@
       background: #f1f5f9;
       border-radius: 14px;
       padding: 4px;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
     .role-btn {
       padding: 10px;
@@ -81,163 +80,6 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
-    .pin-display {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
-    .pin-dot {
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      border: 2px solid #cbd5e1;
-      background: transparent;
-      transition: all 0.2s;
-    }
-    .pin-dot.filled {
-      background: var(--primary);
-      border-color: var(--primary);
-      transform: scale(1.1);
-    }
-    .pin-pad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .pin-btn {
-      height: 60px;
-      border-radius: 16px;
-      border: 1.5px solid var(--border);
-      background: #f8fafc;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .pin-btn:hover { background: #e2e8f0; }
-    .pin-btn:active { transform: scale(0.94); }
-    .pin-btn.delete { font-size: 18px; color: var(--danger); }
-    .pin-btn.empty { border: none; background: transparent; cursor: default; }
-    .login-error {
-      color: var(--danger);
-      font-size: 13px;
-      font-weight: 600;
-      min-height: 20px;
-      margin-top: 4px;
-    }
-    .login-hint {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: 14px;
-      padding: 8px 12px;
-      background: #f8fafc;
-      border-radius: 10px;
-    }
-
-    /* ========== APP LAYOUT ========== */
-    #appContainer { display: none; padding-bottom: 90px; }
-    .navbar {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-    }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--primary);
-    }
-    .nav-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 20px;
-      background: var(--primary-light);
-      color: var(--primary);
-    }
-    .nav-badge.admin {
-      background: var(--purple-light);
-      color: var(--purple);
-    }
-    .nav-actions { display: flex; gap: 8px; align-items: center; }
-    .btn-circle {
-      width: 38px; height: 38px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: white;
-      color: var(--text);
-      cursor: pointer;
-      font-size: 16px;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
-    }
-    .btn-circle:hover { background: #f1f5f9; }
-
-    /* Hero Banner */
-    .hero-banner {
-      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-      color: white;
-      padding: 24px 20px 32px;
-      border-radius: 0 0 24px 24px;
-      margin-bottom: 20px;
-    }
-    .hero-banner.admin-mode {
-      background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%);
-    }
-    .banner-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-    .banner-label { font-size: 13px; opacity: 0.85; font-weight: 500; }
-    .banner-amount { font-size: 38px; font-weight: 800; letter-spacing: -0.5px; }
-    .banner-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 18px;
-    }
-    .banner-stat {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
-      border-radius: 16px;
-      padding: 14px;
-    }
-    .banner-stat-title { font-size: 12px; opacity: 0.85; margin-bottom: 4px; }
-    .banner-stat-val { font-size: 20px; font-weight: 700; }
-
-    /* Page Content */
-    .container { max-width: 680px; margin: 0 auto; padding: 0 16px; }
-    .card {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-      border: 1px solid var(--border);
-    }
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .card-title {
-      font-size: 16px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Forms */
     .form-group { margin-bottom: 14px; }
     .form-label {
       font-size: 13px;
@@ -263,9 +105,162 @@
       background: white;
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
+
+    .pin-display {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 16px 0 20px;
+    }
+    .pin-dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid #cbd5e1;
+      background: transparent;
+      transition: all 0.2s;
+    }
+    .pin-dot.filled {
+      background: var(--primary);
+      border-color: var(--primary);
+      transform: scale(1.1);
+    }
+    .pin-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .pin-btn {
+      height: 54px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      background: #f8fafc;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pin-btn:hover { background: #e2e8f0; }
+    .pin-btn:active { transform: scale(0.94); }
+    .pin-btn.delete { font-size: 16px; color: var(--danger); }
+    .pin-btn.empty { border: none; background: transparent; cursor: default; }
+    .login-error {
+      color: var(--danger);
+      font-size: 13px;
+      font-weight: 600;
+      min-height: 20px;
+      text-align: center;
+    }
+
+    /* ========== APP LAYOUT ========== */
+    #appContainer { display: none; padding-bottom: 90px; }
+    .navbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .nav-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .nav-badge.admin {
+      background: var(--purple-light);
+      color: var(--purple);
+    }
+    .nav-actions { display: flex; gap: 8px; align-items: center; }
+    .btn-circle {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: white;
+      cursor: pointer;
+      font-size: 15px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .btn-circle:hover { background: #f1f5f9; }
+
+    /* Account Card Banner */
+    .acc-banner {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: white;
+      padding: 22px 20px 28px;
+      border-radius: 0 0 24px 24px;
+      margin-bottom: 20px;
+    }
+    .acc-banner.admin-mode {
+      background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+    }
+    .acc-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .acc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .acc-number-tag {
+      font-size: 13px;
+      background: rgba(0,0,0,0.2);
+      padding: 4px 10px;
+      border-radius: 8px;
+      letter-spacing: 0.5px;
+    }
+    .acc-balance-title { font-size: 13px; opacity: 0.85; }
+    .acc-balance-val { font-size: 36px; font-weight: 800; letter-spacing: -0.5px; }
+
+    .container { max-width: 680px; margin: 0 auto; padding: 0 16px; }
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    /* Type Switcher (Deposit / Withdraw) */
+    /* Type Switcher */
     .tx-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -297,10 +292,9 @@
       box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
     }
 
-    /* Buttons */
     .btn {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       border-radius: 14px;
       border: none;
       font-family: 'Sarabun', sans-serif;
@@ -315,7 +309,6 @@
     }
     .btn:active { transform: scale(0.98); }
     .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: var(--primary-dark); }
     .btn-success { background: var(--success); color: white; }
     .btn-purple { background: var(--purple); color: white; }
     .btn-outline {
@@ -325,29 +318,29 @@
     }
     .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 8px; width: auto; }
 
-    /* Transaction List */
+    /* Transaction Item */
     .tx-item {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 14px 0;
+      gap: 12px;
+      padding: 12px 0;
       border-bottom: 1px solid var(--border);
     }
     .tx-item:last-child { border-bottom: none; }
     .tx-icon-box {
-      width: 44px; height: 44px;
-      border-radius: 14px;
+      width: 42px; height: 42px;
+      border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
+      font-size: 18px;
       flex-shrink: 0;
     }
     .tx-icon-box.deposit { background: var(--success-light); color: var(--success); }
     .tx-icon-box.withdraw { background: var(--danger-light); color: var(--danger); }
     .tx-detail-col { flex: 1; min-width: 0; }
-    .tx-main-text { font-size: 15px; font-weight: 600; color: var(--text); }
+    .tx-main-text { font-size: 14px; font-weight: 700; color: var(--text); }
     .tx-sub-text { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
     .tx-right-col { text-align: right; }
-    .tx-val { font-size: 16px; font-weight: 700; }
+    .tx-val { font-size: 15px; font-weight: 800; }
     .tx-val.deposit { color: var(--success); }
     .tx-val.withdraw { color: var(--danger); }
     .btn-receipt-small {
@@ -359,27 +352,12 @@
       padding: 3px 8px;
       border-radius: 6px;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
       border: none;
       cursor: pointer;
     }
 
-    /* Goals Card */
-    .goal-card {
-      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-      border: 1px solid #e9d5ff;
-      border-radius: 18px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-    .goal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .goal-name { font-size: 15px; font-weight: 700; color: #581c87; }
-    .goal-percent { font-size: 14px; font-weight: 800; color: var(--purple); }
-    .progress-track { height: 10px; background: #e9d5ff; border-radius: 99px; overflow: hidden; }
-    .progress-bar { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #9333ea, #3b82f6); transition: width 0.6s ease; }
-    .goal-footer { display: flex; justify-content: space-between; font-size: 12px; color: #7e22ce; margin-top: 6px; font-weight: 600; }
-
-    /* Admin Table */
+    /* Admin Accounts Table */
     .admin-table {
       width: 100%;
       border-collapse: collapse;
@@ -398,7 +376,7 @@
       border-bottom: 1px solid var(--border);
     }
 
-    /* Bottom Navigation */
+    /* Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -421,16 +399,14 @@
       font-weight: 600;
       cursor: pointer;
       padding: 6px;
-      transition: color 0.15s;
     }
-    .nav-item.active { color: var(--primary); }
+    .nav-item.active { color: var(--primary); font-weight: 700; }
     .nav-icon { font-size: 20px; }
 
-    /* Views */
     .view-panel { display: none; }
     .view-panel.active { display: block; }
 
-    /* ========== RECEIPT MODAL (SLIP) ========== */
+    /* ========== RECEIPT MODAL ========== */
     .modal-backdrop {
       position: fixed; inset: 0;
       background: rgba(15, 23, 42, 0.65);
@@ -443,73 +419,63 @@
     }
     .modal-backdrop.active { display: flex; }
     
-    /* E-Slip Card */
     .receipt-slip {
       background: white;
       border-radius: 24px;
       width: 100%;
-      max-width: 360px;
-      padding: 28px 24px;
+      max-width: 380px;
+      padding: 26px 22px;
       box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-      position: relative;
       text-align: center;
-      animation: slipPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: slipPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @keyframes slipPop {
       0% { transform: scale(0.9); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
-    .slip-header { margin-bottom: 20px; border-bottom: 1.5px dashed var(--border); padding-bottom: 16px; }
+    .slip-header {
+      border-bottom: 1.5px dashed var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
     .slip-icon {
-      width: 56px; height: 56px;
+      width: 52px; height: 52px;
       border-radius: 50%;
-      margin: 0 auto 10px;
+      margin: 0 auto 8px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 28px;
+      font-size: 26px;
     }
     .slip-icon.deposit { background: var(--success-light); color: var(--success); }
     .slip-icon.withdraw { background: var(--danger-light); color: var(--danger); }
-    .slip-title { font-size: 18px; font-weight: 800; color: #1e293b; }
-    .slip-status { font-size: 13px; color: var(--success); font-weight: 700; margin-top: 2px; }
+    .slip-title { font-size: 17px; font-weight: 800; }
+    .slip-status { font-size: 12px; font-weight: 700; color: var(--success); }
     .slip-status.withdraw { color: var(--danger); }
 
     .slip-amount-box {
-      margin: 16px 0;
-      padding: 12px;
       background: #f8fafc;
       border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 14px;
     }
-    .slip-amount-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-    .slip-amount-val { font-size: 32px; font-weight: 800; color: #1e293b; letter-spacing: -0.5px; }
+    .slip-amount-val { font-size: 30px; font-weight: 800; color: #1e293b; }
 
-    .slip-details {
-      text-align: left;
-      margin: 16px 0 22px;
-      font-size: 13px;
-    }
+    .slip-details { text-align: left; font-size: 13px; margin-bottom: 20px; }
     .slip-row {
       display: flex;
       justify-content: space-between;
       padding: 6px 0;
       border-bottom: 1px solid #f1f5f9;
     }
-    .slip-row:last-child { border-bottom: none; }
     .slip-row-label { color: var(--text-muted); }
     .slip-row-val { font-weight: 700; color: var(--text); }
-
     .slip-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-    /* PRINT STYLES */
     @media print {
       body * { visibility: hidden; }
       .receipt-slip, .receipt-slip * { visibility: visible; }
       .receipt-slip {
-        position: absolute;
-        left: 0; top: 0;
-        width: 100%;
-        max-width: 100%;
-        box-shadow: none;
-        border: none;
+        position: absolute; left: 0; top: 0; width: 100%; max-width: 100%;
+        box-shadow: none; border: none;
       }
       .slip-actions { display: none !important; }
     }
@@ -518,25 +484,43 @@
 <body>
 
 <!-- ========================================== -->
-<!-- 1. LOGIN SCREEN (หน้าใส่รหัส) -->
+<!-- 1. LOGIN SCREEN -->
 <!-- ========================================== -->
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-logo">💰</div>
     <div class="login-title">SmartSave</div>
-    <div class="login-subtitle">ระบบออมเงินออนไลน์สำหรับทุกคน</div>
+    <div class="login-subtitle">ระบบออมเงินออนไลน์ (แยกบัญชีรายบุคคล)</div>
 
-    <!-- สลับโหมด: นักเรียน (หน้าบ้าน) vs ผู้ดูแล (หลังบ้าน) -->
+    <!-- Toggle Role -->
     <div class="role-toggle">
-      <button class="role-btn active" id="btnRoleUser" onclick="switchLoginRole('user')">👦 นักเรียน/สมาชิก</button>
+      <button class="role-btn active" id="btnRoleUser" onclick="switchLoginRole('user')">👦 บัญชีสมาชิก/นักเรียน</button>
       <button class="role-btn" id="btnRoleAdmin" onclick="switchLoginRole('admin')">🧑‍🏫 ผู้ดูแล/ครู (Admin)</button>
     </div>
 
-    <div style="font-size: 13px; color: #64748b; margin-bottom: 14px;" id="loginPrompt">
-      ใส่รหัส PIN 4 หลัก เพื่อเข้าสู่ระบบสมาชิก
+    <!-- User Login: เลือกบัญชีหรือกรอกเลขบัญชี -->
+    <div id="userLoginBlock">
+      <div class="form-group">
+        <label class="form-label">เลือกเลขที่บัญชีของคุณ</label>
+        <select class="form-control" id="selUserAccount" onchange="onSelectUserAcc()">
+          <!-- ตัวเลือกบัญชี -->
+        </select>
+      </div>
+      <div style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 8px;" id="lblSelectedAccName">
+        เจ้าของบัญชี: -
+      </div>
     </div>
 
-    <!-- จุดแสดง PIN -->
+    <!-- Admin Login Block -->
+    <div id="adminLoginBlock" style="display: none; text-align: center; margin-bottom: 10px;">
+      <span style="font-size: 13px; color: var(--purple); font-weight: 700;">
+        🛡️ โหมดผู้ดูแลระบบ (ครู/Admin)
+      </span>
+      <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+        ใส่รหัส PIN 4 หลักของผู้ดูแล เพื่อเข้าสู่ระบบหลังบ้าน
+      </div>
+    </div>
+
     <div class="pin-display">
       <div class="pin-dot" id="p0"></div>
       <div class="pin-dot" id="p1"></div>
@@ -544,7 +528,7 @@
       <div class="pin-dot" id="p3"></div>
     </div>
 
-    <!-- แป้นตัวเลข -->
+    <!-- Pin Pad -->
     <div class="pin-pad">
       <button class="pin-btn" onclick="pressNum('1')">1</button>
       <button class="pin-btn" onclick="pressNum('2')">2</button>
@@ -561,7 +545,7 @@
     </div>
 
     <div class="login-error" id="loginMsg"></div>
-    <div class="login-hint" id="loginHint">
+    <div style="text-align: center; font-size: 11px; color: #94a3b8; margin-top: 10px;">
       🔑 PIN สมาชิกเริ่มต้น: <strong>1234</strong> | PIN ผู้ดูแล: <strong>8888</strong>
     </div>
   </div>
@@ -571,7 +555,7 @@
 <!-- 2. MAIN APPLICATION -->
 <!-- ========================================== -->
 <div id="appContainer">
-  <!-- Top Navbar -->
+  <!-- Navbar -->
   <header class="navbar">
     <div class="nav-brand">
       <span>💰 SmartSave</span>
@@ -583,103 +567,80 @@
     </div>
   </header>
 
-  <!-- Hero Total Banner -->
-  <div class="hero-banner" id="heroBanner">
+  <!-- Account Banner -->
+  <div class="acc-banner" id="heroBanner">
     <div class="container">
-      <div class="banner-top">
-        <div>
-          <div class="banner-label" id="heroLabel">ยอดเงินออมสะสมของคุณ</div>
-          <div class="banner-amount" id="valTotalBalance">฿0.00</div>
-        </div>
+      <div class="acc-header-line">
+        <div class="acc-badge" id="accBadgeName">👤 คุณพรรณนภัส</div>
+        <div class="acc-number-tag" id="accBadgeNumber">เลขที่บัญชี: 1001</div>
       </div>
-      <div class="banner-grid">
-        <div class="banner-stat">
-          <div class="banner-stat-title">💚 เงินออมรวม (ฝาก)</div>
-          <div class="banner-stat-val" id="valTotalDeposit">฿0.00</div>
-        </div>
-        <div class="banner-stat">
-          <div class="banner-stat-title">🔴 ยอดถอนทั้งหมด</div>
-          <div class="banner-stat-val" id="valTotalWithdraw">฿0.00</div>
-        </div>
-      </div>
+      <div class="acc-balance-title" id="accBalanceTitle">ยอดเงินออมคงเหลือในบัญชีของคุณ</div>
+      <div class="acc-balance-val" id="accBalanceVal">฿0.00</div>
     </div>
   </div>
 
   <main class="container">
 
-    <!-- ==================== VIEW 1: หน้าบันทึกฝาก/ถอน (หน้าบ้าน) ==================== -->
+    <!-- VIEW: บันทึกเงินออม / ถอนเงิน (เฉพาะบัญชีตัวเอง หรือ แอดมินทำรายการให้) -->
     <div class="view-panel active" id="view-save">
-      <!-- บันทึกรายการ -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title">📝 บันทึกรายการใหม่</div>
+          <div class="card-title">📝 ทำรายการฝาก/ถอนเงิน</div>
+          <span id="txtActiveAccRef" style="font-size: 12px; font-weight: 700; color: var(--primary);">บัญชี: 1001</span>
+        </div>
+
+        <!-- ถ้าเป็น Admin สามารถเลือกบัญชีลูกค้าที่ต้องการทำรายการให้ได้ -->
+        <div id="adminTargetAccSection" style="display:none; background: var(--purple-light); padding: 12px; border-radius: 12px; margin-bottom: 14px;">
+          <label class="form-label" style="color: var(--purple); font-weight: 700;">เลือกบัญชีลูกค้า/นักเรียน ที่ต้องการทำรายการให้:</label>
+          <select class="form-control" id="selAdminTargetAcc" onchange="onAdminChangeTargetAcc()">
+            <!-- บัญชีลูกค้า -->
+          </select>
         </div>
 
         <div class="tx-switch">
-          <button class="tx-tab active-deposit" id="btnTypeDeposit" onclick="changeTxType('deposit')">💚 บันทึกเงินออม (ฝาก)</button>
+          <button class="tx-tab active-deposit" id="btnTypeDeposit" onclick="changeTxType('deposit')">💚 ฝากเงินออม</button>
           <button class="tx-tab" id="btnTypeWithdraw" onclick="changeTxType('withdraw')">🔴 ถอนเงินออม</button>
         </div>
 
         <div class="form-grid">
           <div class="form-group">
-            <label class="form-label">ชื่อผู้ทำรายการ / นักเรียน</label>
-            <input class="form-control" id="inpMemberName" type="text" placeholder="ระบุชื่อผู้ทำรายการ" value="พรรณนภัส" />
-          </div>
-          <div class="form-group">
             <label class="form-label">จำนวนเงิน (บาท)</label>
             <input class="form-control" id="inpAmount" type="number" placeholder="0.00" min="1" step="any" />
           </div>
-        </div>
-
-        <div class="form-grid">
           <div class="form-group">
             <label class="form-label">วันที่ทำรายการ</label>
             <input class="form-control" id="inpDate" type="date" />
           </div>
-          <div class="form-group">
-            <label class="form-label">หมวดหมู่</label>
-            <select class="form-control" id="inpCategory">
-              <option value="เงินออมทั่วไป">เงินออมทั่วไป</option>
-              <option value="การศึกษา">การศึกษา</option>
-              <option value="ค่าขนม">ค่าขนม</option>
-              <option value="ของขวัญ/รางวัล">ของขวัญ/รางวัล</option>
-              <option value="เป้าหมายพิเศษ">เป้าหมายพิเศษ</option>
-              <option value="อื่นๆ">อื่นๆ</option>
-            </select>
-          </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">บันทึกเพิ่มเติม (ไม่บังคับ)</label>
-          <input class="form-control" id="inpNote" type="text" placeholder="เช่น ออมเงินค่าขนมประจำวัน" />
+          <label class="form-label">หมวดหมู่</label>
+          <select class="form-control" id="inpCategory">
+            <option value="เงินออมประจำวัน">เงินออมประจำวัน</option>
+            <option value="ค่าขนมเหลือใช้">ค่าขนมเหลือใช้</option>
+            <option value="การศึกษา/อุปกรณ์เรียน">การศึกษา/อุปกรณ์เรียน</option>
+            <option value="เงินรางวัล/ของขวัญ">เงินรางวัล/ของขวัญ</option>
+            <option value="เป้าหมายพิเศษ">เป้าหมายพิเศษ</option>
+            <option value="อื่นๆ">อื่นๆ</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">บันทึกเพิ่มเติม (ถ้ามี)</label>
+          <input class="form-control" id="inpNote" type="text" placeholder="ระบุรายละเอียด เช่น ฝากเงินออมค่าขนม" />
         </div>
 
         <button class="btn btn-success" id="btnSubmitTx" onclick="submitTransaction()">
           🧾 บันทึกและออกใบเสร็จ
         </button>
       </div>
-
-      <!-- การ์ดเป้าหมายการออม -->
-      <div class="goal-card" id="goalCard">
-        <div class="goal-top">
-          <span class="goal-name" id="displayGoalName">🎯 เป้าหมาย: ซื้อแท็บเล็ตเพื่อการศึกษา</span>
-          <span class="goal-percent" id="displayGoalPercent">0%</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-bar" id="goalBar" style="width: 0%;"></div>
-        </div>
-        <div class="goal-footer">
-          <span id="displayGoalSaved">ออมแล้ว: ฿0.00</span>
-          <span id="displayGoalTarget">เป้าหมาย: ฿15,000.00</span>
-        </div>
-      </div>
     </div>
 
-    <!-- ==================== VIEW 2: ประวัติรายการ & ดูใบเสร็จย้อนหลัง ==================== -->
+    <!-- VIEW: ประวัติรายการ & ใบเสร็จ (เฉพาะบัญชีนี้ หรือทั้งหมดสำหรับแอดมิน) -->
     <div class="view-panel" id="view-history">
       <div class="card">
         <div class="card-header">
-          <div class="card-title">📜 ประวัติการออมและการถอน</div>
+          <div class="card-title">📜 ประวัติรายการ & สลิปใบเสร็จ</div>
           <button class="btn btn-outline btn-sm" onclick="renderHistory()">รีเฟรช</button>
         </div>
         <div id="historyListContainer">
@@ -688,83 +649,101 @@
       </div>
     </div>
 
-    <!-- ==================== VIEW 3: หลังบ้าน (ADMIN DASHBOARD) ==================== -->
+    <!-- VIEW: ระบบหลังบ้าน (แอดมิน / ครู) -->
     <div class="view-panel" id="view-admin">
+      <!-- สรุปภาพรวม -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title">🧑‍🏫 รายงานระบบหลังบ้าน (สำหรับครู/ผู้ดูแล)</div>
-          <button class="btn btn-purple btn-sm" onclick="exportCSV()">📥 ดาวน์โหลด CSV</button>
+          <div class="card-title">🧑‍🏫 ระบบหลังบ้าน (จัดการบัญชีลูกค้าทั้งหมด)</div>
+          <button class="btn btn-purple btn-sm" onclick="exportCSV()">📥 ส่งออก CSV</button>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;">
           <div style="background: var(--primary-light); padding: 12px; border-radius: 12px; text-align: center;">
-            <div style="font-size: 11px; color: var(--primary); font-weight: 700;">จำนวนรายการ</div>
-            <div style="font-size: 18px; font-weight: 800; color: var(--primary);" id="adminTxCount">0</div>
+            <div style="font-size: 11px; color: var(--primary); font-weight: 700;">บัญชีทั้งหมด</div>
+            <div style="font-size: 18px; font-weight: 800; color: var(--primary);" id="adminAccCount">0</div>
           </div>
           <div style="background: var(--success-light); padding: 12px; border-radius: 12px; text-align: center;">
-            <div style="font-size: 11px; color: var(--success); font-weight: 700;">ยอดออมรวม</div>
-            <div style="font-size: 18px; font-weight: 800; color: var(--success);" id="adminDepositSum">฿0</div>
+            <div style="font-size: 11px; color: var(--success); font-weight: 700;">ยอดเงินรวมทุกบัญชี</div>
+            <div style="font-size: 18px; font-weight: 800; color: var(--success);" id="adminTotalVault">฿0</div>
           </div>
-          <div style="background: var(--danger-light); padding: 12px; border-radius: 12px; text-align: center;">
-            <div style="font-size: 11px; color: var(--danger); font-weight: 700;">ยอดถอนรวม</div>
-            <div style="font-size: 18px; font-weight: 800; color: var(--danger);" id="adminWithdrawSum">฿0</div>
+          <div style="background: var(--purple-light); padding: 12px; border-radius: 12px; text-align: center;">
+            <div style="font-size: 11px; color: var(--purple); font-weight: 700;">รายการทั้งหมด</div>
+            <div style="font-size: 18px; font-weight: 800; color: var(--purple);" id="adminTxTotalCount">0</div>
           </div>
         </div>
 
-        <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">📋 ข้อมูลรายการทั้งหมดในระบบ</div>
+        <!-- ฟอร์มเปิดบัญชีใหม่ -->
+        <div style="background: #f8fafc; border: 1.5px dashed var(--border); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+          <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--purple);">➕ เปิดบัญชีสมาชิกใหม่</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">เลขที่บัญชี (ระบบตั้งให้อัตโนมัติ หรือแก้ไขได้)</label>
+              <input class="form-control" id="inpNewAccNumber" placeholder="เช่น 1003" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">ชื่อ-นามสกุล / ชื่อลูกค้า</label>
+              <input class="form-control" id="inpNewAccName" placeholder="เช่น ด.ญ. พรรณนภัส สุขใจ" />
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">ชั้นเรียน / ห้อง / แผนก</label>
+              <input class="form-control" id="inpNewAccClass" placeholder="เช่น ม.4/1" value="ม.4/1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">รหัส PIN เริ่มต้น (4 หลัก)</label>
+              <input class="form-control" id="inpNewAccPin" type="password" maxlength="4" value="1234" />
+            </div>
+          </div>
+          <button class="btn btn-purple" onclick="createNewAccount()">✨ ยืนยันเปิดบัญชีใหม่</button>
+        </div>
+
+        <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">📋 รายชื่อบัญชีสมาชิกและยอดคงเหลือ</div>
         <div style="overflow-x: auto;">
           <table class="admin-table">
             <thead>
               <tr>
-                <th>วันที่</th>
-                <th>ชื่อผู้ทำรายการ</th>
-                <th>ประเภท</th>
-                <th>จำนวนเงิน</th>
-                <th>ใบเสร็จ</th>
+                <th>เลขที่บัญชี</th>
+                <th>ชื่อเจ้าของบัญชี</th>
+                <th>ห้อง</th>
+                <th>ยอดเงินคงเหลือ</th>
+                <th>จัดการ</th>
               </tr>
             </thead>
-            <tbody id="adminTableBody">
-              <!-- แอดมินดูรายการทั้งหมด -->
+            <tbody id="adminAccountsTableBody">
+              <!-- ข้อมูลบัญชี -->
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ==================== VIEW 4: การตั้งค่า ==================== -->
+    <!-- VIEW: การตั้งค่า -->
     <div class="view-panel" id="view-settings">
       <div class="card">
         <div class="card-header">
-          <div class="card-title">⚙️ ตั้งค่าระบบ</div>
+          <div class="card-title">⚙️ ตั้งค่าบัญชี</div>
         </div>
         
-        <div class="form-group">
-          <label class="form-label">🎯 ตั้งเป้าหมายการออมใหม่</label>
+        <div class="form-group" id="blockChangePin">
+          <label class="form-label">🔐 เปลี่ยนรหัส PIN ของบัญชีนี้ (4 หลัก)</label>
           <div class="form-grid">
-            <input class="form-control" id="inpNewGoalName" placeholder="ชื่อเป้าหมาย เช่น ซื้อไอแพด" />
-            <input class="form-control" id="inpNewGoalTarget" type="number" placeholder="จำนวนเงินเป้าหมาย" />
+            <input class="form-control" id="inpChangePin" type="password" maxlength="4" placeholder="PIN ใหม่ 4 หลัก" />
+            <button class="btn btn-outline" onclick="saveNewPinForCurrentAcc()">บันทึก PIN ใหม่</button>
           </div>
-          <button class="btn btn-primary" style="margin-top: 8px;" onclick="updateSavingsGoal()">บันทึกเป้าหมาย</button>
         </div>
 
         <hr style="border: none; border-top: 1px solid var(--border); margin: 20px 0;" />
 
         <div class="form-group">
-          <label class="form-label">🔐 เปลี่ยนรหัส PIN สมาชิก (4 หลัก)</label>
-          <div class="form-grid">
-            <input class="form-control" id="inpNewUserPin" type="password" maxlength="4" placeholder="รหัสใหม่ 4 หลัก" />
-            <button class="btn btn-outline" onclick="changeUserPin()">เปลี่ยนรหัส</button>
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-top: 20px;">
           <label class="form-label">☁️ ลิงก์ Google Apps Script URL (เชื่อม Google Sheets)</label>
           <input class="form-control" id="inpGasApiUrl" readonly />
         </div>
 
         <div style="margin-top: 24px; text-align: center;">
           <button class="btn btn-outline" style="color: var(--danger); border-color: var(--danger);" onclick="resetAllData()">
-            🗑️ ล้างข้อมูลรายการทั้งหมด
+            🗑️ ล้างข้อมูลและรีเซ็ตระบบ
           </button>
         </div>
       </div>
@@ -772,11 +751,11 @@
 
   </main>
 
-  <!-- Bottom Navigation Bar -->
+  <!-- Navigation -->
   <nav class="bottom-nav">
     <button class="nav-item active" id="nav-save" onclick="switchView('save')">
       <span class="nav-icon">✏️</span>
-      <span>บันทึกออม</span>
+      <span>ฝาก/ถอน</span>
     </button>
     <button class="nav-item" id="nav-history" onclick="switchView('history')">
       <span class="nav-icon">📜</span>
@@ -800,17 +779,25 @@
   <div class="receipt-slip">
     <div class="slip-header">
       <div class="slip-icon deposit" id="slipIcon">✓</div>
-      <div class="slip-title" id="slipTypeTitle">ใบเสร็จบันทึกเงินออม</div>
+      <div class="slip-title" id="slipTypeTitle">ใบเสร็จรับเงินการออม</div>
       <div class="slip-status deposit" id="slipStatus">ทำรายการสำเร็จ (SUCCESS)</div>
       <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">SmartSave Digital Receipt</div>
     </div>
 
     <div class="slip-amount-box">
-      <div class="slip-amount-label">จำนวนเงิน</div>
+      <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">จำนวนเงิน</div>
       <div class="slip-amount-val" id="slipAmount">฿0.00</div>
     </div>
 
     <div class="slip-details">
+      <div class="slip-row">
+        <span class="slip-row-label">เลขที่บัญชี:</span>
+        <span class="slip-row-val" id="slipAccNo" style="color: var(--primary); font-size: 14px;">-</span>
+      </div>
+      <div class="slip-row">
+        <span class="slip-row-label">ชื่อบัญชี:</span>
+        <span class="slip-row-val" id="slipMemberName">-</span>
+      </div>
       <div class="slip-row">
         <span class="slip-row-label">รหัสอ้างอิง:</span>
         <span class="slip-row-val" id="slipRef">-</span>
@@ -820,26 +807,22 @@
         <span class="slip-row-val" id="slipDateTime">-</span>
       </div>
       <div class="slip-row">
-        <span class="slip-row-label">ผู้ทำรายการ:</span>
-        <span class="slip-row-val" id="slipMemberName">-</span>
-      </div>
-      <div class="slip-row">
         <span class="slip-row-label">หมวดหมู่:</span>
         <span class="slip-row-val" id="slipCategory">-</span>
       </div>
       <div class="slip-row">
-        <span class="slip-row-label">รายละเอียด:</span>
-        <span class="slip-row-val" id="slipNote">-</span>
+        <span class="slip-row-label">ผู้ทำรายการ:</span>
+        <span class="slip-row-val" id="slipOperator">-</span>
       </div>
-      <div class="slip-row" style="margin-top: 6px; padding-top: 8px; border-top: 1.5px dashed var(--border);">
-        <span class="slip-row-label">ยอดเงินคงเหลือสุทธิ:</span>
-        <span class="slip-row-val" id="slipRemaining" style="color: var(--primary); font-size: 15px;">฿0.00</span>
+      <div class="slip-row" style="margin-top: 8px; padding-top: 8px; border-top: 1.5px dashed var(--border);">
+        <span class="slip-row-label">ยอดเงินคงเหลือในบัญชี:</span>
+        <span class="slip-row-val" id="slipRemaining" style="color: var(--success); font-size: 16px;">฿0.00</span>
       </div>
     </div>
 
     <div class="slip-actions">
       <button class="btn btn-outline" onclick="closeReceiptModal()">ปิดหน้าต่าง</button>
-      <button class="btn btn-primary" onclick="printReceipt()">🖨️ พิมพ์สลิป</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์สลิป</button>
     </div>
   </div>
 </div>
@@ -849,35 +832,58 @@
   // CONFIG & STATE
   // ============================================================
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbyyz_RsNOR8ZLGeyQ1KC8kTFWOXY5WRPoP8xLFqX-ZOVqaXnCg8kKD-WWL1LEpy9M7aoQ/exec';
-  const DEFAULT_USER_PIN  = '1234';
   const DEFAULT_ADMIN_PIN = '8888';
 
-  let currentRole   = 'user'; // 'user' | 'admin'
-  let enteredPin    = '';
-  let activeTxType  = 'deposit'; // 'deposit' | 'withdraw'
+  // ข้อมูลบัญชีเริ่มต้น
+  const INITIAL_ACCOUNTS = [
+    { accNo: '1001', name: 'พรรณนภัส', classroom: 'ม.4/1', pin: '1234', balance: 0 },
+    { accNo: '1002', name: 'สมชาย ใจดี', classroom: 'ม.4/1', pin: '1234', balance: 0 }
+  ];
+
+  let accounts      = [];
   let transactions  = [];
-  let goalData      = { name: 'ซื้อแท็บเล็ตเพื่อการศึกษา', target: 15000 };
+  let activeRole    = 'user'; // 'user' | 'admin'
+  let activeAccNo   = '1001'; // บัญชีที่ล็อกอินอยู่
+  let enteredPin    = '';
+  let activeTxType  = 'deposit';
 
   // ============================================================
-  // STORAGE HELPERS
+  // STORAGE
   // ============================================================
-  function loadLocalData() {
-    transactions = JSON.parse(localStorage.getItem('ss_tx_list') || '[]');
-    const savedGoal = localStorage.getItem('ss_goal_data');
-    if (savedGoal) goalData = JSON.parse(savedGoal);
+  function loadData() {
+    const savedAccs = localStorage.getItem('ss_acc_list');
+    accounts = savedAccs ? JSON.parse(savedAccs) : [...INITIAL_ACCOUNTS];
+
+    const savedTx = localStorage.getItem('ss_tx_list');
+    transactions = savedTx ? JSON.parse(savedTx) : [];
   }
-  function saveLocalData() {
+
+  function saveData() {
+    localStorage.setItem('ss_acc_list', JSON.stringify(accounts));
     localStorage.setItem('ss_tx_list', JSON.stringify(transactions));
-    localStorage.setItem('ss_goal_data', JSON.stringify(goalData));
   }
-  function getUserPin()  { return localStorage.getItem('ss_user_pin') || DEFAULT_USER_PIN; }
-  function setUserPin(p) { localStorage.setItem('ss_user_pin', p); }
 
   // ============================================================
-  // LOGIN / PIN LOGIC
+  // LOGIN SCREEN
   // ============================================================
+  function initLoginDropdown() {
+    loadData();
+    const sel = document.getElementById('selUserAccount');
+    sel.innerHTML = accounts.map(a => `<option value="${a.accNo}">${a.accNo} - ${a.name} (${a.classroom || ''})</option>`).join('');
+    onSelectUserAcc();
+    suggestNextAccNumber();
+  }
+
+  function onSelectUserAcc() {
+    const sel = document.getElementById('selUserAccount');
+    const acc = accounts.find(a => a.accNo === sel.value);
+    if (acc) {
+      document.getElementById('lblSelectedAccName').textContent = 'เจ้าของบัญชี: ' + acc.name + ' (เลขที่ ' + acc.accNo + ')';
+    }
+  }
+
   function switchLoginRole(role) {
-    currentRole = role;
+    activeRole = role;
     enteredPin = '';
     updatePinDots();
     document.getElementById('loginMsg').textContent = '';
@@ -886,11 +892,11 @@
     document.getElementById('btnRoleAdmin').classList.toggle('active', role === 'admin');
 
     if (role === 'admin') {
-      document.getElementById('loginPrompt').textContent = 'ใส่รหัส PIN ผู้ดูแล 4 หลัก (ค่าเริ่มต้น: 8888)';
-      document.getElementById('loginPrompt').style.color = 'var(--purple)';
+      document.getElementById('userLoginBlock').style.display = 'none';
+      document.getElementById('adminLoginBlock').style.display = 'block';
     } else {
-      document.getElementById('loginPrompt').textContent = 'ใส่รหัส PIN สมาชิก 4 หลัก (ค่าเริ่มต้น: 1234)';
-      document.getElementById('loginPrompt').style.color = '#64748b';
+      document.getElementById('userLoginBlock').style.display = 'block';
+      document.getElementById('adminLoginBlock').style.display = 'none';
     }
   }
 
@@ -915,17 +921,35 @@
 
   function verifyPin() {
     setTimeout(() => {
-      const targetPin = (currentRole === 'admin') ? DEFAULT_ADMIN_PIN : getUserPin();
-      if (enteredPin === targetPin) {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('appContainer').style.display = 'block';
-        initAppView();
+      if (activeRole === 'admin') {
+        if (enteredPin === DEFAULT_ADMIN_PIN) {
+          loginSuccess('admin');
+        } else {
+          showLoginError('❌ PIN ผู้ดูแลไม่ถูกต้อง (ค่าเริ่มต้น: 8888)');
+        }
       } else {
-        document.getElementById('loginMsg').textContent = '❌ รหัส PIN ไม่ถูกต้อง';
-        enteredPin = '';
-        updatePinDots();
+        const selAccNo = document.getElementById('selUserAccount').value;
+        const targetAcc = accounts.find(a => a.accNo === selAccNo);
+        if (targetAcc && enteredPin === (targetAcc.pin || '1234')) {
+          activeAccNo = targetAcc.accNo;
+          loginSuccess('user');
+        } else {
+          showLoginError('❌ รหัส PIN ของบัญชีนี้ไม่ถูกต้อง (ค่าเริ่มต้น: 1234)');
+        }
       }
     }, 150);
+  }
+
+  function showLoginError(msg) {
+    document.getElementById('loginMsg').textContent = msg;
+    enteredPin = '';
+    updatePinDots();
+  }
+
+  function loginSuccess(role) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'block';
+    initAppView();
   }
 
   function handleLogout() {
@@ -935,142 +959,159 @@
     document.getElementById('loginMsg').textContent = '';
     document.getElementById('appContainer').style.display = 'none';
     document.getElementById('loginScreen').style.display = 'flex';
+    initLoginDropdown();
   }
 
   // ============================================================
   // APP INITIALIZATION
   // ============================================================
   function initAppView() {
-    loadLocalData();
     document.getElementById('inpDate').value = new Date().toISOString().split('T')[0];
     document.getElementById('inpGasApiUrl').value = GAS_URL;
 
-    // Role UI setup
-    if (currentRole === 'admin') {
+    if (activeRole === 'admin') {
       document.getElementById('badgeRole').textContent = '🧑‍🏫 ผู้ดูแล (Admin)';
       document.getElementById('badgeRole').className = 'nav-badge admin';
       document.getElementById('heroBanner').classList.add('admin-mode');
-      document.getElementById('heroLabel').textContent = 'ยอดเงินรวมทั้งหมดในระบบ (ทุกสมาชิก)';
+      document.getElementById('accBadgeName').textContent = '🛡️ บัญชีผู้ดูแลระบบ (ครู)';
+      document.getElementById('accBadgeNumber').textContent = 'ADMIN PORTAL';
+      document.getElementById('accBalanceTitle').textContent = 'ยอดเงินรวมทุกบัญชีในระบบ';
+      document.getElementById('adminTargetAccSection').style.display = 'block';
+      updateAdminTargetAccDropdown();
       switchView('admin');
     } else {
+      const myAcc = accounts.find(a => a.accNo === activeAccNo);
       document.getElementById('badgeRole').textContent = '👦 สมาชิก';
       document.getElementById('badgeRole').className = 'nav-badge';
       document.getElementById('heroBanner').classList.remove('admin-mode');
-      document.getElementById('heroLabel').textContent = 'ยอดเงินออมสะสมของคุณ';
+      document.getElementById('accBadgeName').textContent = '👤 ' + (myAcc ? myAcc.name : 'สมาชิก');
+      document.getElementById('accBadgeNumber').textContent = 'เลขที่บัญชี: ' + activeAccNo;
+      document.getElementById('accBalanceTitle').textContent = 'ยอดเงินออมคงเหลือในบัญชีของคุณ';
+      document.getElementById('adminTargetAccSection').style.display = 'none';
+      document.getElementById('txtActiveAccRef').textContent = 'บัญชีเลขที่: ' + activeAccNo;
       switchView('save');
     }
 
-    refreshDashboardStats();
+    refreshBalanceDisplay();
     renderHistory();
-    renderGoalProgress();
+  }
+
+  function updateAdminTargetAccDropdown() {
+    const sel = document.getElementById('selAdminTargetAcc');
+    sel.innerHTML = accounts.map(a => `<option value="${a.accNo}">บัญชี ${a.accNo} - ${a.name} (คงเหลือ ฿${formatRaw(a.balance)})</option>`).join('');
+    onAdminChangeTargetAcc();
+  }
+
+  function onAdminChangeTargetAcc() {
+    const sel = document.getElementById('selAdminTargetAcc');
+    document.getElementById('txtActiveAccRef').textContent = 'ทำรายการให้บัญชี: ' + sel.value;
   }
 
   // ============================================================
-  // NAVIGATION & VIEWS
+  // NAVIGATION
   // ============================================================
   function switchView(viewName) {
-    const views = ['save', 'history', 'admin', 'settings'];
-    views.forEach(v => {
+    ['save', 'history', 'admin', 'settings'].forEach(v => {
       document.getElementById('view-' + v).classList.toggle('active', v === viewName);
       document.getElementById('nav-' + v).classList.toggle('active', v === viewName);
     });
 
-    if (viewName === 'admin') renderAdminView();
+    if (viewName === 'admin') renderAdminTable();
     if (viewName === 'history') renderHistory();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // ============================================================
-  // TRANSACTION LOGIC & RECEIPT
+  // TRANSACTIONS & RECEIPTS
   // ============================================================
   function changeTxType(type) {
     activeTxType = type;
     document.getElementById('btnTypeDeposit').className  = 'tx-tab' + (type === 'deposit'  ? ' active-deposit'  : '');
     document.getElementById('btnTypeWithdraw').className = 'tx-tab' + (type === 'withdraw' ? ' active-withdraw' : '');
 
-    const btnSubmit = document.getElementById('btnSubmitTx');
+    const btn = document.getElementById('btnSubmitTx');
     if (type === 'deposit') {
-      btnSubmit.className = 'btn btn-success';
-      btnSubmit.innerHTML = '🧾 บันทึกเงินออมและออกใบเสร็จ';
+      btn.className = 'btn btn-success';
+      btn.innerHTML = '🧾 บันทึกเงินออมและออกใบเสร็จ';
     } else {
-      btnSubmit.className = 'btn btn-primary';
-      btnSubmit.style.background = 'var(--danger)';
-      btnSubmit.innerHTML = '🧾 บันทึกถอนเงินและออกใบเสร็จ';
+      btn.className = 'btn btn-primary';
+      btn.style.background = 'var(--danger)';
+      btn.innerHTML = '🧾 บันทึกถอนเงินและออกใบเสร็จ';
     }
   }
 
   function submitTransaction() {
-    const memberName = document.getElementById('inpMemberName').value.trim() || 'สมาชิกทั่วไป';
-    const amount     = parseFloat(document.getElementById('inpAmount').value);
-    const date       = document.getElementById('inpDate').value;
-    const category   = document.getElementById('inpCategory').value;
-    const note       = document.getElementById('inpNote').value.trim() || '-';
+    const amount   = parseFloat(document.getElementById('inpAmount').value);
+    const date     = document.getElementById('inpDate').value;
+    const category = document.getElementById('inpCategory').value;
+    const note     = document.getElementById('inpNote').value.trim() || '-';
 
     if (!amount || amount <= 0) return alert('กรุณาระบุจำนวนเงินที่ถูกต้อง');
     if (!date) return alert('กรุณาระบุวันที่ทำรายการ');
 
+    // ระบุว่าทำรายการให้บัญชีไหน
+    let targetAccNo = (activeRole === 'admin') ? document.getElementById('selAdminTargetAcc').value : activeAccNo;
+    const targetAcc = accounts.find(a => a.accNo === targetAccNo);
+    if (!targetAcc) return alert('ไม่พบบัญชีปลายทาง');
+
     // ตรวจสอบยอดเงินถ้าถอน
-    const currentBalance = calculateBalance();
-    if (activeTxType === 'withdraw' && amount > currentBalance) {
-      return alert('❌ ไม่สามารถถอนเงินได้: ยอดเงินคงเหลือไม่เพียงพอ (คงเหลือ ' + formatMoney(currentBalance) + ')');
+    if (activeTxType === 'withdraw' && amount > targetAcc.balance) {
+      return alert(`❌ ไม่สามารถถอนได้: ยอดเงินในบัญชี ${targetAcc.accNo} (${targetAcc.name}) ไม่เพียงพอ (คงเหลือ ${formatMoney(targetAcc.balance)})`);
+    }
+
+    // คำนวณยอดใหม่
+    if (activeTxType === 'deposit') {
+      targetAcc.balance += amount;
+    } else {
+      targetAcc.balance -= amount;
     }
 
     const now = new Date();
     const newTx = {
       id: 'TX' + now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '-' + Math.floor(1000 + Math.random() * 9000),
-      member_name: memberName,
+      acc_no: targetAcc.accNo,
+      member_name: targetAcc.name,
       type: activeTxType,
       amount: amount,
+      balance_after: targetAcc.balance,
       date: date,
       time: now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }),
       category: category,
       note: note,
+      operator: (activeRole === 'admin') ? 'ครู/ผู้ดูแล (Admin)' : 'สมาชิกตนเอง',
       created_at: now.toISOString()
     };
 
     transactions.unshift(newTx);
-    saveLocalData();
+    saveData();
 
     // รีเฟรชหน้าจอ
-    refreshDashboardStats();
+    refreshBalanceDisplay();
     renderHistory();
-    renderGoalProgress();
+    if (activeRole === 'admin') updateAdminTargetAccDropdown();
 
-    // ล้างช่องจำนวนเงิน
     document.getElementById('inpAmount').value = '';
     document.getElementById('inpNote').value = '';
 
-    // แสดงใบเสร็จทันที!
+    // แสดงใบเสร็จ
     showReceiptModal(newTx);
 
-    // ซิงก์ไป Google Sheets เบื้องหลัง
+    // ซิงก์ไป Google Sheets
     sendTxToGoogleSheets(newTx);
   }
 
-  function calculateBalance() {
-    let deposit = 0, withdraw = 0;
-    transactions.forEach(t => {
-      if (t.type === 'deposit')  deposit += Number(t.amount);
-      if (t.type === 'withdraw') withdraw += Number(t.amount);
-    });
-    return deposit - withdraw;
-  }
-
-  function refreshDashboardStats() {
-    let deposit = 0, withdraw = 0;
-    transactions.forEach(t => {
-      if (t.type === 'deposit')  deposit += Number(t.amount);
-      if (t.type === 'withdraw') withdraw += Number(t.amount);
-    });
-    const balance = deposit - withdraw;
-
-    document.getElementById('valTotalBalance').textContent  = formatMoney(balance);
-    document.getElementById('valTotalDeposit').textContent  = formatMoney(deposit);
-    document.getElementById('valTotalWithdraw').textContent = formatMoney(withdraw);
+  function refreshBalanceDisplay() {
+    if (activeRole === 'admin') {
+      const totalVault = accounts.reduce((sum, a) => sum + Number(a.balance || 0), 0);
+      document.getElementById('accBalanceVal').textContent = formatMoney(totalVault);
+    } else {
+      const myAcc = accounts.find(a => a.accNo === activeAccNo);
+      document.getElementById('accBalanceVal').textContent = formatMoney(myAcc ? myAcc.balance : 0);
+    }
   }
 
   // ============================================================
-  // RECEIPT MODAL (ใบเสร็จ)
+  // RECEIPT MODAL
   // ============================================================
   function showReceiptModal(tx) {
     const isDeposit = tx.type === 'deposit';
@@ -1081,7 +1122,7 @@
     if (isDeposit) {
       iconEl.textContent = '✓';
       iconEl.className = 'slip-icon deposit';
-      titleEl.textContent = 'ใบเสร็จบันทึกเงินออม (DEPOSIT)';
+      titleEl.textContent = 'ใบเสร็จรับเงินการออม (DEPOSIT)';
       statusEl.textContent = 'ฝากเงินสำเร็จ (SUCCESS)';
       statusEl.className = 'slip-status deposit';
     } else {
@@ -1093,12 +1134,13 @@
     }
 
     document.getElementById('slipAmount').textContent     = formatMoney(tx.amount);
+    document.getElementById('slipAccNo').textContent      = tx.acc_no || '-';
+    document.getElementById('slipMemberName').textContent = tx.member_name || '-';
     document.getElementById('slipRef').textContent        = tx.id;
     document.getElementById('slipDateTime').textContent   = tx.date + ' ' + (tx.time || '');
-    document.getElementById('slipMemberName').textContent = tx.member_name || 'สมาชิกทั่วไป';
     document.getElementById('slipCategory').textContent   = tx.category || '-';
-    document.getElementById('slipNote').textContent       = tx.note || '-';
-    document.getElementById('slipRemaining').textContent  = formatMoney(calculateBalance());
+    document.getElementById('slipOperator').textContent   = tx.operator || '-';
+    document.getElementById('slipRemaining').textContent  = formatMoney(tx.balance_after);
 
     document.getElementById('receiptModal').classList.add('active');
   }
@@ -1107,21 +1149,22 @@
     document.getElementById('receiptModal').classList.remove('active');
   }
 
-  function printReceipt() {
-    window.print();
-  }
-
   // ============================================================
   // HISTORY LIST
   // ============================================================
   function renderHistory() {
     const container = document.getElementById('historyListContainer');
-    if (transactions.length === 0) {
-      container.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-muted);">ยังไม่มีรายการบันทึก</div>';
+    // ถ้าเป็น User ให้เห็นเฉพาะรายการของบัญชีตัวเอง, แอดมินเห็นทั้งหมด
+    const list = (activeRole === 'admin') 
+      ? transactions 
+      : transactions.filter(t => t.acc_no === activeAccNo);
+
+    if (list.length === 0) {
+      container.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-muted);">ยังไม่มีรายการบันทึกของบัญชีนี้</div>';
       return;
     }
 
-    container.innerHTML = transactions.map(t => {
+    container.innerHTML = list.map(t => {
       const isDeposit = t.type === 'deposit';
       return `
         <div class="tx-item">
@@ -1129,8 +1172,12 @@
             ${isDeposit ? '💚' : '🔴'}
           </div>
           <div class="tx-detail-col">
-            <div class="tx-main-text">${t.member_name || 'สมาชิก'} · ${t.category}</div>
-            <div class="tx-sub-text">${t.date} ${t.time || ''} ${t.note && t.note !== '-' ? '· ' + t.note : ''}</div>
+            <div class="tx-main-text">
+              บัญชี ${t.acc_no} (${t.member_name}) · ${t.category}
+            </div>
+            <div class="tx-sub-text">
+              ${t.date} ${t.time || ''} | ผู้บันทึก: ${t.operator}
+            </div>
           </div>
           <div class="tx-right-col">
             <div class="tx-val ${t.type}">
@@ -1148,87 +1195,90 @@
   // ============================================================
   // ADMIN DASHBOARD
   // ============================================================
-  function renderAdminView() {
-    let deposit = 0, withdraw = 0;
-    transactions.forEach(t => {
-      if (t.type === 'deposit')  deposit += Number(t.amount);
-      if (t.type === 'withdraw') withdraw += Number(t.amount);
-    });
+  function suggestNextAccNumber() {
+    const highest = accounts.reduce((max, a) => Math.max(max, parseInt(a.accNo) || 1000), 1000);
+    document.getElementById('inpNewAccNumber').value = String(highest + 1);
+  }
 
-    document.getElementById('adminTxCount').textContent    = transactions.length;
-    document.getElementById('adminDepositSum').textContent = formatMoney(deposit);
-    document.getElementById('adminWithdrawSum').textContent= formatMoney(withdraw);
+  function createNewAccount() {
+    const accNo = document.getElementById('inpNewAccNumber').value.trim();
+    const name  = document.getElementById('inpNewAccName').value.trim();
+    const cls   = document.getElementById('inpNewAccClass').value.trim() || '-';
+    const pin   = document.getElementById('inpNewAccPin').value.trim() || '1234';
 
-    const tbody = document.getElementById('adminTableBody');
-    if (transactions.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:#94a3b8;">ยังไม่มีข้อมูลในระบบ</td></tr>';
-      return;
-    }
+    if (!accNo || !name) return alert('กรุณาระบุเลขที่บัญชีและชื่อลูกค้า');
+    if (accounts.some(a => a.accNo === accNo)) return alert('เลขที่บัญชีนี้มีอยู่ในระบบแล้ว');
+    if (!/^\d{4}$/.test(pin)) return alert('รหัส PIN ต้องเป็นตัวเลข 4 หลัก');
 
-    tbody.innerHTML = transactions.map(t => `
+    const newAcc = { accNo, name, classroom: cls, pin, balance: 0 };
+    accounts.push(newAcc);
+    saveData();
+
+    alert(`✅ เปิดบัญชีใหม่สำเร็จ!\nเลขที่บัญชี: ${accNo}\nชื่อ: ${name}\nPIN: ${pin}`);
+    document.getElementById('inpNewAccName').value = '';
+    suggestNextAccNumber();
+    updateAdminTargetAccDropdown();
+    renderAdminTable();
+  }
+
+  function renderAdminTable() {
+    document.getElementById('adminAccCount').textContent = accounts.length;
+    const totalVault = accounts.reduce((sum, a) => sum + Number(a.balance || 0), 0);
+    document.getElementById('adminTotalVault').textContent = formatMoney(totalVault);
+    document.getElementById('adminTxTotalCount').textContent = transactions.length;
+
+    const tbody = document.getElementById('adminAccountsTableBody');
+    tbody.innerHTML = accounts.map(a => `
       <tr>
-        <td>${t.date}</td>
-        <td><strong>${t.member_name || '-'}</strong></td>
-        <td><span style="color:${t.type==='deposit'?'var(--success)':'var(--danger)'};font-weight:700;">${t.type==='deposit'?'ฝากเงิน':'ถอนเงิน'}</span></td>
-        <td>${formatMoney(t.amount)}</td>
-        <td><button class="btn-receipt-small" onclick='showReceiptModal(${JSON.stringify(t)})'>ใบเสร็จ</button></td>
+        <td><strong>${a.accNo}</strong></td>
+        <td>${a.name}</td>
+        <td>${a.classroom || '-'}</td>
+        <td style="color:var(--success); font-weight:700;">${formatMoney(a.balance)}</td>
+        <td>
+          <button class="btn-receipt-small" onclick="adminQuickDeposit('${a.accNo}')">ฝาก/ถอน</button>
+        </td>
       </tr>
     `).join('');
   }
 
+  function adminQuickDeposit(accNo) {
+    switchView('save');
+    document.getElementById('selAdminTargetAcc').value = accNo;
+    onAdminChangeTargetAcc();
+  }
+
   function exportCSV() {
     if (transactions.length === 0) return alert('ไม่มีข้อมูลสำหรับส่งออก');
-    let csv = "ID,วันที่,เวลา,ชื่อสมาชิก,ประเภท,จำนวนเงิน,หมวดหมู่,หมายเหตุ\n";
+    let csv = "ID,เลขที่บัญชี,ชื่อสมาชิก,ประเภท,จำนวนเงิน,ยอดคงเหลือ,วันที่,เวลา,หมวดหมู่,ผู้บันทึก,หมายเหตุ\n";
     transactions.forEach(t => {
-      csv += `"${t.id}","${t.date}","${t.time||''}","${t.member_name||''}","${t.type==='deposit'?'ฝาก':'ถอน'}","${t.amount}","${t.category}","${t.note}"\n`;
+      csv += `"${t.id}","${t.acc_no}","${t.member_name}","${t.type==='deposit'?'ฝาก':'ถอน'}","${t.amount}","${t.balance_after}","${t.date}","${t.time||''}","${t.category}","${t.operator}","${t.note}"\n`;
     });
     const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "SmartSave_Report_" + new Date().toISOString().split('T')[0] + ".csv";
+    link.download = "SmartSave_Accounts_Report_" + new Date().toISOString().split('T')[0] + ".csv";
     link.click();
   }
 
-  // ============================================================
-  // GOAL TRACKING
-  // ============================================================
-  function renderGoalProgress() {
-    const currentBalance = Math.max(0, calculateBalance());
-    const pct = Math.min(100, Math.round((currentBalance / goalData.target) * 100));
-
-    document.getElementById('displayGoalName').textContent    = '🎯 เป้าหมาย: ' + goalData.name;
-    document.getElementById('displayGoalPercent').textContent = pct + '%';
-    document.getElementById('goalBar').style.width            = pct + '%';
-    document.getElementById('displayGoalSaved').textContent   = 'ออมแล้ว: ' + formatMoney(currentBalance);
-    document.getElementById('displayGoalTarget').textContent  = 'เป้าหมาย: ' + formatMoney(goalData.target);
-  }
-
-  function updateSavingsGoal() {
-    const name   = document.getElementById('inpNewGoalName').value.trim();
-    const target = parseFloat(document.getElementById('inpNewGoalTarget').value);
-    if (!name || !target || target <= 0) return alert('กรุณาระบุชื่อและจำนวนเงินเป้าหมาย');
-    goalData = { name, target };
-    saveLocalData();
-    renderGoalProgress();
-    alert('✅ อัปเดตเป้าหมายการออมเรียบร้อย!');
-  }
-
-  function changeUserPin() {
-    const pin = document.getElementById('inpNewUserPin').value.trim();
-    if (!/^\d{4}$/.test(pin)) return alert('กรุณาระบุรหัส PIN ตัวเลข 4 หลัก');
-    setUserPin(pin);
-    document.getElementById('inpNewUserPin').value = '';
-    alert('✅ เปลี่ยนรหัส PIN สมาชิกสำเร็จ!');
+  function saveNewPinForCurrentAcc() {
+    const newPin = document.getElementById('inpChangePin').value.trim();
+    if (!/^\d{4}$/.test(newPin)) return alert('กรุณากรอกรหัส PIN ตัวเลข 4 หลัก');
+    const myAcc = accounts.find(a => a.accNo === activeAccNo);
+    if (myAcc) {
+      myAcc.pin = newPin;
+      saveData();
+      alert('✅ เปลี่ยนรหัส PIN สำหรับบัญชี ' + activeAccNo + ' เรียบร้อยแล้ว!');
+      document.getElementById('inpChangePin').value = '';
+    }
   }
 
   function resetAllData() {
-    if (!confirm('⚠️ คำเตือน: คุณต้องการลบประวัติรายการทั้งหมดใช่หรือไม่? (ไม่สามารถกู้คืนได้)')) return;
+    if (!confirm('⚠️ คุณต้องการรีเซ็ตข้อมูลทั้งหมดและล้างรายการใช่หรือไม่?')) return;
+    accounts = [...INITIAL_ACCOUNTS];
     transactions = [];
-    saveLocalData();
-    refreshDashboardStats();
-    renderHistory();
-    renderGoalProgress();
-    alert('🗑️ ล้างข้อมูลเรียบร้อยแล้ว');
+    saveData();
+    alert('ล้างข้อมูลเรียบร้อยแล้ว');
+    handleLogout();
   }
 
   // ============================================================
@@ -1239,16 +1289,29 @@
       await fetch(GAS_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'addTransaction', transactionData: tx }),
+        body: JSON.stringify({
+          action: 'addTransaction',
+          transactionData: {
+            id: tx.id,
+            member_id: tx.acc_no,
+            date: tx.date,
+            type: tx.type,
+            amount: tx.amount,
+            balance: tx.balance_after,
+            note: `[${tx.member_name}] ${tx.category} | ${tx.note}`,
+            recorded_by: tx.operator,
+            created_at: tx.created_at
+          }
+        }),
         redirect: 'follow'
       });
     } catch (e) {
-      console.warn('Google Sheets background sync notice:', e);
+      console.warn('Sheets sync:', e);
     }
   }
 
   async function syncGoogleSheets() {
-    alert('🔄 กำลังเชื่อมต่อและซิงก์ข้อมูลกับ Google Sheets...');
+    alert('🔄 กำลังเชื่อมต่อกับ Google Sheets...');
     try {
       const res = await fetch(GAS_URL, {
         method: 'POST',
@@ -1257,26 +1320,21 @@
         redirect: 'follow'
       });
       const data = await res.json();
-      if (data.transactions && data.transactions.length > 0) {
-        // ผสานข้อมูล
-        transactions = data.transactions;
-        saveLocalData();
-        refreshDashboardStats();
-        renderHistory();
-        renderGoalProgress();
-        alert('✅ ซิงก์ข้อมูลจาก Google Sheets สำเร็จ!');
-      } else {
-        alert('✅ เชื่อมต่อ Google Sheets สำเร็จ (ตารางยังว่างเปล่า)');
-      }
+      alert('✅ เชื่อมต่อและซิงก์กับ Google Sheets สำเร็จ!');
     } catch (e) {
-      alert('⚠️ ซิงก์ไม่สำเร็จ: ' + e.message + '\n(ระบบยังคงใช้งานและบันทึกในเครื่องได้ปกติ)');
+      alert('⚠️ ซิงก์ไม่สำเร็จ: ' + e.message);
     }
   }
 
-  // Helpers
   function formatMoney(num) {
     return '฿' + Number(num || 0).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
+  function formatRaw(num) {
+    return Number(num || 0).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // Start app
+  initLoginDropdown();
 </script>
 </body>
 </html>
